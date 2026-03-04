@@ -1,0 +1,15 @@
+{
+  "name": "review-pr",
+  "description": "A plugin to review pull requests and provide feedback.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Yavor Atov",
+    "email": "yavor.atov@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["review", "pull-request", "feedback"],
+  "agents": "agents/",
+  "skills": ["skills/"],
+  "hooks": "hooks.json",
+  "mcpServers": ".mcp.json"
+}
