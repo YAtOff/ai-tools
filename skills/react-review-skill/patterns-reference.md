@@ -209,12 +209,12 @@ function UserProfile() {
 ```javascript
 // Uncontrolled
 function UncontrolledInput() {
-  return <input type="text" />;
+  return <input type='text' />;
 }
 
 // Controlled
 function ControlledInput({ value, onChange }) {
-  return <input type="text" value={value} onChange={onChange} />;
+  return <input type='text' value={value} onChange={onChange} />;
 }
 
 // Hybrid (supports both patterns)
@@ -231,7 +231,7 @@ function FlexibleInput({ value: controlledValue, onChange, defaultValue }) {
     onChange?.(e);
   };
 
-  return <input type="text" value={value} onChange={handleChange} />;
+  return <input type='text' value={value} onChange={handleChange} />;
 }
 ```
 
@@ -347,13 +347,13 @@ function Tabs({ children, defaultTab }) {
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
-      <div className="tabs">{children}</div>
+      <div className='tabs'>{children}</div>
     </TabsContext.Provider>
   );
 }
 
 function TabList({ children }) {
-  return <div className="tab-list">{children}</div>;
+  return <div className='tab-list'>{children}</div>;
 }
 
 function Tab({ id, children }) {
@@ -379,13 +379,13 @@ Tabs.Tab = Tab;
 Tabs.Panel = TabPanel;
 
 // Usage - clean and intuitive API
-<Tabs defaultTab="profile">
+<Tabs defaultTab='profile'>
   <Tabs.List>
-    <Tabs.Tab id="profile">Profile</Tabs.Tab>
-    <Tabs.Tab id="settings">Settings</Tabs.Tab>
+    <Tabs.Tab id='profile'>Profile</Tabs.Tab>
+    <Tabs.Tab id='settings'>Settings</Tabs.Tab>
   </Tabs.List>
-  <Tabs.Panel id="profile">Profile content</Tabs.Panel>
-  <Tabs.Panel id="settings">Settings content</Tabs.Panel>
+  <Tabs.Panel id='profile'>Profile content</Tabs.Panel>
+  <Tabs.Panel id='settings'>Settings content</Tabs.Panel>
 </Tabs>
 ```
 
@@ -445,7 +445,7 @@ function StyledDropdown({ items }) {
   const { selectedItem, getToggleProps, getMenuProps, getItemProps } = useDropdown();
 
   return (
-    <div className="my-custom-dropdown">
+    <div className='my-custom-dropdown'>
       <button {...getToggleProps()}>
         {selectedItem || 'Select...'}
       </button>
@@ -539,19 +539,19 @@ function Modal({ children, isOpen }) {
 // ❌ Scattered conditionals across multiple files
 // In PaymentForm.jsx
 function PaymentForm({ country, method }) {
-  if (country === "US") {
+  if (country === 'US') {
     return <USPaymentForm method={method} />;
-  } else if (country === "EU") {
+  } else if (country === 'EU') {
     return <EUPaymentForm method={method} />;
   }
 }
 
 // In paymentValidation.js
 function validatePayment(method, country) {
-  if (country === "US") {
+  if (country === 'US') {
     // US validation rules
     return method.zipCode && method.zipCode.length === 5;
-  } else if (country === "EU") {
+  } else if (country === 'EU') {
     // EU validation rules
     return method.iban && method.iban.startsWith('EU');
   }
@@ -559,9 +559,9 @@ function validatePayment(method, country) {
 
 // In paymentProcessor.js
 function processPayment(method, country) {
-  if (country === "US") {
+  if (country === 'US') {
     // US processing
-  } else if (country === "EU") {
+  } else if (country === 'EU') {
     // EU processing
   }
 }
@@ -971,7 +971,7 @@ function withAuth(Component) {
     const { user, loading } = useAuth();
 
     if (loading) return <Spinner />;
-    if (!user) return <Redirect to="/login" />;
+    if (!user) return <Redirect to='/login' />;
 
     return <Component {...props} user={user} />;
   };

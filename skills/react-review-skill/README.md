@@ -4,7 +4,7 @@ A comprehensive skill for conducting systematic React.js code reviews based on m
 
 ## Files
 
-### SKILL.md (600+ lines)
+### SKILL.md
 Main skill file containing:
 - Skill metadata (name, description, license)
 - Usage instructions
@@ -20,7 +20,7 @@ Main skill file containing:
 - Review process workflow
 - Output format guidelines
 
-### patterns-reference.md (1000+ lines)
+### patterns-reference.md
 Detailed reference documentation containing:
 - **24+ React design patterns** with examples
 - **Architectural patterns** (Layered Architecture)
@@ -35,7 +35,7 @@ Detailed reference documentation containing:
 
 ## How It Works
 
-The skill keeps the main review guidance organized in SKILL.md (~600 lines) while providing detailed pattern information in a separate reference file (patterns-reference.md, ~1000 lines). This allows:
+The skill keeps the main review guidance organized in SKILL.md while providing detailed pattern information in a separate reference file (patterns-reference.md). This allows:
 
 1. **Efficient context usage**: Core review principles in main skill file
 2. **On-demand detail**: Reference the patterns guide when needed
