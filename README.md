@@ -1,13 +1,12 @@
 # AI Tools Collection
 
-A curated collection of reusable prompts and custom chat modes for GitHub Copilot, designed to enhance your development workflow with AI-powered assistance across various software engineering tasks.
+A curated collection of reusable prompts, skills and agents for GitHub Copilot, designed to enhance your development workflow with AI-powered assistance across various software engineering tasks.
 
 ## Overview
 
 This repository provides ready-to-use tools that extend GitHub Copilot's capabilities through:
 
 - **Reusable Prompts**: Task-specific prompt templates with predefined modes, models, and tools
-- **Custom Chat Modes**: Specialized behaviors for context-aware assistance in particular workflows
 - **Skills**: Specialized instruction sets that teach Copilot to perform tasks in a specific, repeatable way
 - **Plugins**: Installable packages that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations
 
@@ -117,10 +116,10 @@ copilot plugin uninstall PLUGIN-NAME   # Remove a plugin
 
 For more details, see [Finding and installing plugins](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-finding-installing).
 
-### Install Prompts/Chat Modes
+### Install Prompts
 
 - Click the install buttons in the documentation below for one-click installation
-- Or download `.prompt.md` or `.chatmode.md` files and add them to your prompt collection manually
+- Or download `.prompt.md` files and add them to your prompt collection manually
 
 ## Usage
 
@@ -128,10 +127,6 @@ For more details, see [Finding and installing plugins](https://docs.github.com/e
 - Use `/prompt-name` in VS Code Chat after installation
 - Run `Chat: Run Prompt` from the Command Palette
 - Click the run button while viewing a prompt file in VS Code
-
-**For Custom Chat Modes:**
-- Select the desired chat mode from the VS Code Chat interface
-- Activate through the Command Palette or chat mode selector
 
 ## Available Tools
 
