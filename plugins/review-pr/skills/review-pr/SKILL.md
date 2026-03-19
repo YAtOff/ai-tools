@@ -40,6 +40,8 @@ Parse user arguments:
 | `types` | type-design-analyzer | Types added/modified |
 | `code` | code-reviewer | Always applicable |
 | `simplify` | code-simplifier | After passing review |
+| `react` | `react-review` (via subagent) | React files (`.jsx`, `.tsx`) changed |
+| `django` | `django-rest-api-review` (via subagent) | Django Python files changed |
 | `all` | *all applicable* | Default |
 
 ### 3. Determine Applicable Reviews
@@ -51,12 +53,17 @@ Based on changes:
 - **Error handling changed**: `silent-failure-hunter`
 - **Types added/modified**: `type-design-analyzer`
 - **After passing review**: `code-simplifier` (polish)
+- **React files changed**: If `.jsx`, `.tsx`, or React components are modified, check if the `react-review` skill is available. If yes, add to applicable reviews.
+- **Django files changed**: If Django models, views, serializers, or services are modified, check if the `django-rest-api-review` skill is available. If yes, add to applicable reviews.
 
 ### 4. Launch Agents Sequentially
 
 ```
 Important: Run agents ONE AT A TIME. Wait for each to complete before launching the next.
 ```
+
+**Tech Stack Specialized Reviews (`react`, `django`)**:
+For these reviews, dispatch a subagent (e.g., `generalist`). Instruct the subagent to activate the applicable skills (`react-review` and/or `django-rest-api-review`) one after another using the `activate_skill` tool and perform the review. Wait for the subagent to complete before proceeding.
 
 ### 5. Aggregate Results
 
@@ -66,13 +73,13 @@ Organize findings by priority:
 # PR Review Summary
 
 ## Critical Issues (X found)
-- [agent-name]: Issue description [file:line]
+- [agent/skill-name]: Issue description [file:line]
 
 ## Important Issues (X found)
-- [agent-name]: Issue description [file:line]
+- [agent/skill-name]: Issue description [file:line]
 
 ## Suggestions (X found)
-- [agent-name]: Suggestion [file:line]
+- [agent/skill-name]: Suggestion [file:line]
 
 ## Strengths
 - What's well-done
@@ -83,6 +90,8 @@ Organize findings by priority:
 3. Consider suggestions
 4. Re-run review after fixes
 ```
+
+*Note: Ensure findings from the subagent tech stack reviews (`[react-review]`, `[django-rest-api-review]`) are also explicitly included and organized by priority.*
 
 ## Agent Reference
 
