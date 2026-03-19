@@ -1,6 +1,6 @@
 {
-  "name": "review-pr",
-  "description": "A plugin to review pull requests and provide feedback.",
+  "name": "pr-toolkit",
+  "description": "A plugin to create and review pull requests and provide feedback.",
   "version": "1.0.0",
   "author": {
     "name": "Yavor Atov",
