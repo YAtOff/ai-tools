@@ -1,87 +1,54 @@
 ---
 name: simplifying-code
-description: Use when working code needs cleanup for clarity, consistency, or maintainability without changing behavior, especially in recently modified files after implementation or review.
+description: Use after implementation or review when recently modified code needs simplification or refactoring for clarity, consistency, or maintainability without intended behavior changes.
 ---
 
-# Simplifying Code
+# Simplify: Code Review and Cleanup
 
-## Overview
+Review all changed files for reuse, quality, and efficiency. Fix any issues found.
 
-Simplify code without changing behavior. Prefer readable, explicit code over clever compression, and keep changes tightly scoped to the code the user asked about or the recently modified diff.
+## Phase 1: Identify Changes
 
-## When to Use
+Run \`git diff\` (or \`git diff HEAD\` if there are staged changes) to see what changed. If there are no git changes, review the most recently modified files that the user mentioned or that you edited earlier in this conversation.
 
-Use this skill when:
-- a change works but the code is harder to read than it needs to be
-- review feedback asks for cleanup, consistency, or smaller responsibilities
-- recently modified code has duplication, unnecessary nesting, vague names, or redundant comments
+## Phase 2: Launch Three Review Agents in Parallel
 
-Do not use this skill for:
-- intentional behavior changes
-- broad rewrites outside the requested scope
-- speculative refactors without verification
+Launch all three agents concurrently in a single message. Pass each agent the full diff so it has the complete context.
 
-## Required Setup
+### Agent 1: Code Reuse Review
 
-1. **Read repository instructions first.** When multiple repository instruction files apply, precedence is: file-local or subdirectory instructions, then repo-root `AGENTS.md`, then repo-root `CLAUDE.md`, then the applicable Copilot or Copilog instruction file under `.github/`, such as `.github/copilot-instructions.md`. If repository instructions conflict with this skill or a language-specific styleguide, the more specific repository instruction wins.
-2. **Use a dedicated subagent when available.** Run simplification in a dedicated subagent instead of mixing it into the main implementation thread, and pass the applicable repository instructions into that subagent. If delegation is unavailable, keep the simplification work isolated and tightly scoped in the current thread.
-3. **Load the matching styleguide skill.** Use the language-specific styleguide skill for the code you are simplifying when one exists, such as `python-styleguide` for Python. Apply it after the repository instructions so language conventions do not override repo rules. If the change spans multiple languages, apply the matching guide per file.
-4. **Stay local.** Simplify only the user-specified scope or the recently modified code unless the user asks for a broader pass. If the user has not identified files and there is no recent diff or changed-region context, ask for the target files or diff before simplifying.
+For each change:
 
-## Simplification Workflow
+1. **Search for existing utilities and helpers** that could replace newly written code. Look for similar patterns elsewhere in the codebase — common locations are utility directories, shared modules, and files adjacent to the changed ones.
+2. **Flag any new function that duplicates existing functionality.** Suggest the existing function to use instead.
+3. **Flag any inline logic that could use an existing utility** — hand-rolled string manipulation, manual path handling, custom environment checks, ad-hoc type guards, and similar patterns are common candidates.
 
-1. Identify the exact files and changed regions in scope.
-2. Read nearby tests, types, helpers, and call sites needed to preserve behavior.
-3. Simplify for clarity:
-   - reduce nesting
-   - remove duplication and dead indirection
-   - improve names
-   - separate mixed responsibilities
-   - delete redundant inline comments that only restate the code, but keep required docstrings and comments mandated by repo or language-specific styleguide rules
-4. Preserve or improve reliability:
-   - keep existing behavior and public interfaces intact unless told otherwise
-   - do not add silent fallbacks or broad error swallowing just to make code shorter
-   - keep helpful abstractions; do not collapse unrelated concerns into one function
-5. Validate with the existing verification path for the touched code.
+### Agent 2: Code Quality Review
 
-## Core Pattern
+Review the same changes for hacky patterns:
 
-```python
-# Before
-def active_user_names(users):
-    names = []
-    for user in users:
-        if user is None:
-            continue
-        if user.is_active:
-            if user.name:
-                names.append(user.name.strip())
-    return names
+1. **Redundant state**: state that duplicates existing state, cached values that could be derived, observers/effects that could be direct calls
+2. **Parameter sprawl**: adding new parameters to a function instead of generalizing or restructuring existing ones
+3. **Copy-paste with slight variation**: near-duplicate code blocks that should be unified with a shared abstraction
+4. **Leaky abstractions**: exposing internal details that should be encapsulated, or breaking existing abstraction boundaries
+5. **Stringly-typed code**: using raw strings where constants, enums (string unions), or branded types already exist in the codebase
+6. **Unnecessary JSX nesting**: wrapper Boxes/elements that add no layout value — check if inner component props (flexShrink, alignItems, etc.) already provide the needed behavior
+7. **Unnecessary comments**: comments explaining WHAT the code does (well-named identifiers already do that), narrating the change, or referencing the task/caller — delete; keep only non-obvious WHY (hidden constraints, subtle invariants, workarounds)
 
-# After
-def active_user_names(users):
-    active_names: list[str] = []
-    for user in users:
-        if user is None or not user.is_active or not user.name:
-            continue
-        active_names.append(user.name.strip())
-    return active_names
-```
+### Agent 3: Efficiency Review
 
-Same behavior, less nesting, clearer intent. Apply the active language's styleguide before making the change.
+Review the same changes for efficiency:
 
-## Common Mistakes
+1. **Unnecessary work**: redundant computations, repeated file reads, duplicate network/API calls, N+1 patterns
+2. **Missed concurrency**: independent operations run sequentially when they could run in parallel
+3. **Hot-path bloat**: new blocking work added to startup or per-request/per-render hot paths
+4. **Recurring no-op updates**: state/store updates inside polling loops, intervals, or event handlers that fire unconditionally — add a change-detection guard so downstream consumers aren't notified when nothing changed. Also: if a wrapper function takes an updater/reducer callback, verify it honors same-reference returns (or whatever the "no change" signal is) — otherwise callers' early-return no-ops are silently defeated
+5. **Unnecessary existence checks**: pre-checking file/resource existence before operating (TOCTOU anti-pattern) — operate directly and handle the error
+6. **Memory**: unbounded data structures, missing cleanup, event listener leaks
+7. **Overly broad operations**: reading entire files when only a portion is needed, loading all items when filtering for one
 
-- Changing behavior while "cleaning up"
-- Applying one framework's rules to unrelated code
-- Expanding the refactor far beyond the changed area
-- Making code shorter but harder to debug
-- Skipping the repo instruction files and local conventions
+## Phase 3: Fix Issues
 
-## Quick Reference
+Wait for all three agents to complete. Aggregate their findings and fix each issue directly. If a finding is a false positive or not worth addressing, note it and move on — do not argue with the finding, just skip it.
 
-- **Primary goal:** clarity without behavior change
-- **Default scope:** recently modified code
-- **First checks:** the most specific repository instruction file, then `AGENTS.md`, then `CLAUDE.md`, then the relevant `.github` instruction file, then the matching styleguide skill
-- **Execution mode:** dedicated subagent when available
-- **Avoid:** framework-specific assumptions unless the code in scope and repo guidance require them
+When done, briefly summarize what was fixed (or confirm the code was already clean).
