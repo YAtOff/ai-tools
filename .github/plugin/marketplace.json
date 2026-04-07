@@ -1,0 +1,20 @@
+{
+  "name": "Yavor's AI tools",
+  "owner": {
+    "name": "Yavor Atov",
+    "email": "yavor.atov@gmail.com"
+  },
+  "metadata": {
+    "description": "Various skills for Github Copilot",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "pr-toolkit",
+      "description": "A plugin to create and review pull requests and provide feedback.",
+      "version": "1.0.0",
+      "source": "./plugins/pr-toolkit"
+    }
+  ]
+}
+
