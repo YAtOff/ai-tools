@@ -76,6 +76,7 @@ cp -r skills/architecture-analyzer /path/to/your/repo/.github/skills/
 |-------|-------------|
 | `architecture-analyzer` | Analyze project structure and generate architecture docs |
 | `architecture-blueprint-generator` | Generate a comprehensive suite of architectural documentation |
+| `software-design-review` | Review high-level software design for boundaries, dependency direction, domain alignment, structural testability, security/observability seams, and resilience |
 
 For more information, see [About agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills).
 
@@ -130,7 +131,8 @@ ai-tools/
 │       └── skills/             # Skills included with the toolkit
 └── skills/                     # Standalone agent skills
     ├── architecture-analyzer/  # Analyze project architecture
-    └── architecture-blueprint-generator/ # Generate deep architectural blueprints
+    ├── architecture-blueprint-generator/ # Generate deep architectural blueprints
+    └── software-design-review/ # Review high-level software design
 ```
 
 ## Contributing
